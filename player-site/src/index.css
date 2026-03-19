@@ -1,0 +1,35 @@
+/* Base: il tema scuro è definito in App.css per .site */
+:root {
+  --font-display: 'Bebas Neue', system-ui, sans-serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(225, 29, 137, 0.35);
+  color: #fff;
+}
+
+p {
+  margin: 0;
+}
