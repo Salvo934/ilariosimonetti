@@ -132,6 +132,7 @@ const REGULAR_SEASON_STATS = [
 function App() {
   const [showIntro, setShowIntro] = useState(true)
   const [introFinished, setIntroFinished] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     if (!showIntro) {
@@ -139,6 +140,30 @@ function App() {
       return () => clearTimeout(timer)
     }
   }, [showIntro])
+
+  useEffect(() => {
+    // Close menu if intro is shown again
+    if (showIntro) setMobileMenuOpen(false)
+  }, [showIntro])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false)
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [mobileMenuOpen])
+
+  const handleMobileNavLink = () => setMobileMenuOpen(false)
 
   return (
     <>
@@ -174,6 +199,22 @@ function App() {
           <span className="brand-name">Ilario Simonetti</span>
           <span className="brand-number">#7</span>
         </a>
+
+        <button
+          type="button"
+          className="mobile-nav-toggle"
+          aria-label="Apri menu"
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((v) => !v)}
+        >
+          <img
+            className="mobile-nav-icon"
+            src="/icons8-pallacanestro-64.png"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+
         <nav className="main-nav" aria-label="Menu principale">
           <a href="#highlights">Highlights</a>
           <a href="#stats">Statistiche</a>
@@ -233,6 +274,42 @@ function App() {
         </nav>
         <a href="#store" className="nav-cta">Shop</a>
       </header>
+
+      <div
+        className={`mobile-nav-overlay ${mobileMenuOpen ? 'open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu principale (mobile)"
+      >
+        <button
+          type="button"
+          className="mobile-nav-backdrop"
+          aria-label="Chiudi menu"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        <div className="mobile-nav-panel">
+          <div className="mobile-nav-top">
+            <span className="mobile-nav-title">Menu</span>
+            <button
+              type="button"
+              className="mobile-nav-close"
+              aria-label="Chiudi menu"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              ×
+            </button>
+          </div>
+
+          <nav className="mobile-nav" aria-label="Menu principale">
+            <a href="#highlights" onClick={handleMobileNavLink}>Highlights</a>
+            <a href="#stats" onClick={handleMobileNavLink}>Statistiche</a>
+            <a href="#gallery" onClick={handleMobileNavLink}>Foto</a>
+            <a href="#story" onClick={handleMobileNavLink}>Storia</a>
+            <a href="#interviews" onClick={handleMobileNavLink}>Interviste</a>
+            <a href="#store" className="mobile-nav-cta" onClick={handleMobileNavLink}>Shop</a>
+          </nav>
+        </div>
+      </div>
 
       <main>
         <section className="hero-section">
