@@ -570,6 +570,21 @@ function App() {
               <div className="photo-card gallery-item">
                 <img className="photo-img" src="/avatar.JPG" alt="Avatar" loading="lazy" />
               </div>
+              <div className="photo-card gallery-item">
+                <img className="photo-img" src="/latina1.jpg" alt="Foto latina 1" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item">
+                <img className="photo-img" src="/latina2.jpg" alt="Foto latina 2" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item">
+                <img className="photo-img" src="/latina3.jpg" alt="Foto latina 3" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item">
+                <img className="photo-img" src="/latina4.jpg" alt="Foto latina 4" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item">
+                <img className="photo-img" src="/latina5.jpg" alt="Foto latina 5" loading="lazy" />
+              </div>
 
               {/* duplicate for infinite marquee */}
               <div className="photo-card gallery-item" aria-hidden="true">
@@ -595,6 +610,21 @@ function App() {
               </div>
               <div className="photo-card gallery-item" aria-hidden="true">
                 <img className="photo-img" src="/avatar.JPG" alt="" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item" aria-hidden="true">
+                <img className="photo-img" src="/latina1.jpg" alt="" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item" aria-hidden="true">
+                <img className="photo-img" src="/latina2.jpg" alt="" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item" aria-hidden="true">
+                <img className="photo-img" src="/latina3.jpg" alt="" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item" aria-hidden="true">
+                <img className="photo-img" src="/latina4.jpg" alt="" loading="lazy" />
+              </div>
+              <div className="photo-card gallery-item" aria-hidden="true">
+                <img className="photo-img" src="/latina5.jpg" alt="" loading="lazy" />
               </div>
             </div>
           </div>
