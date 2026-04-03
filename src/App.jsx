@@ -690,7 +690,7 @@ function App() {
           </div>
           <div className="story-grid">
             <p>
-              Sono Ilario Simonetti, nato il 27 aprile 2004 a Stilo, in provincia di Reggio Calabria.
+              Sono Ilario Simonetti, nato il 27 maggio 2004 a Stilo, in provincia di Reggio Calabria.
               Gioco a pallacanestro nel ruolo di ala: sono alto 200 cm e peso 103 kg. Mi considero un
               giocatore moderno, capace di unire fisicità, mobilità e versatilità tecnica.
             </p>
