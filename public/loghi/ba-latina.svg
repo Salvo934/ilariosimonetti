@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="B.A. Latina">
+  <defs>
+    <linearGradient id="bl" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e11d89"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="#0a0a0f" stroke="url(#bl)" stroke-width="2"/>
+  <text x="100" y="118" text-anchor="middle" fill="#f8fafc" font-family="system-ui,Segoe UI,sans-serif" font-size="48" font-weight="600" letter-spacing="1">BA</text>
+</svg>

@@ -5,8 +5,9 @@ import './App.css'
 const YT_HIGHLIGHTS = [
   {
     id: 'game-derby',
-    title: '35 punti nel derby cittadino',
-    description: "Derby di fuoco, Ilario chiude con 35 punti e il buzzer beater sull'angolo sinistro.",
+    title: 'Canestri, rimbalzi e tanta difesa',
+    description:
+      'Una prestazione completa: punti che pesano, lavoro sotto i tabelloni e aggressività quando si deve chiudere il possesso avversario.',
     youtubeId: 'lVvjB86NlPM',
   },
   {
@@ -129,10 +130,51 @@ const REGULAR_SEASON_STATS = [
   },
 ]
 
+const CLUB_TEAMS = [
+  {
+    id: 'eutimo',
+    name: 'Eutimo Basket Locri',
+    seasons: 'Locri',
+    league: 'Serie C',
+    logo: '/eutimologo.jpeg',
+  },
+  {
+    id: 'ferrara',
+    name: 'VIS 2008 Ferrara',
+    seasons: 'Ferrara',
+    league: 'Serie C',
+    logo: '/ferraralogo.jpeg',
+  },
+  {
+    id: 'pozzuoli',
+    name: 'Virtus Pozzuoli',
+    seasons: 'Pozzuoli',
+    league: 'Serie C',
+    logo: '/pozzuolilogo.jpeg',
+  },
+  {
+    id: 'viola',
+    name: 'Pallacanestro Viola Reggio Calabria',
+    seasons: 'Reggio Calabria',
+    league: 'Serie B',
+    logo: '/violalogo.jpeg',
+  },
+  {
+    id: 'latina',
+    name: 'Latina Basket',
+    seasons: '2025–26',
+    league: 'Serie B',
+    logo: '/latinalogo.jpeg',
+  },
+]
+
 function App() {
   const [showIntro, setShowIntro] = useState(true)
   const [introFinished, setIntroFinished] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const instagramUrl = 'https://www.instagram.com/ilariosimonetti?igsh=MXM5dHNseDA5dnA0eA=='
+  const tiktokUrl = 'https://www.tiktok.com/@sssimo.7?_r=1&_t=ZN-95EBVB7Kg34'
+  const facebookUrl = 'https://www.facebook.com/share/1CsMyVVD4G/?mibextid=wwXIfr'
 
   useEffect(() => {
     if (!showIntro) {
@@ -220,7 +262,9 @@ function App() {
           <a href="#stats">Statistiche</a>
           <a href="#gallery">Foto</a>
           <a href="#story">Storia</a>
+          <a href="#club">Club</a>
           <a href="#interviews">Interviste</a>
+          <a href="#social">Social</a>
           <div className="basket-particles" aria-hidden="true">
             <span
               className="basket-particle"
@@ -305,7 +349,9 @@ function App() {
             <a href="#stats" onClick={handleMobileNavLink}>Statistiche</a>
             <a href="#gallery" onClick={handleMobileNavLink}>Foto</a>
             <a href="#story" onClick={handleMobileNavLink}>Storia</a>
+            <a href="#club" onClick={handleMobileNavLink}>Club</a>
             <a href="#interviews" onClick={handleMobileNavLink}>Interviste</a>
+            <a href="#social" onClick={handleMobileNavLink}>Social</a>
             <a href="#store" className="mobile-nav-cta" onClick={handleMobileNavLink}>Shop</a>
           </nav>
         </div>
@@ -317,7 +363,10 @@ function App() {
             <div className="hero-copy">
               <p className="hero-label">Basketball · Point Guard</p>
               <h1 className="hero-title">Ilario Simonetti</h1>
-              <p className="hero-tagline">Giocatore. Leader. #7.</p>
+              <p className="hero-bio">
+                Giocatore · anno 2004 · 200 cm · 103 kg
+              </p>
+              <p className="hero-tagline">Leader · #7</p>
               <div className="hero-actions">
                 <a href="#highlights" className="primary-btn">Guarda gli highlights</a>
                 <a href="#store" className="ghost-btn">Maglia ufficiale</a>
@@ -392,9 +441,10 @@ function App() {
               <div className="embed-wrapper">
                 <iframe
                   title={YT_HIGHLIGHTS[0].title}
-                  src={`https://www.youtube.com/embed/${YT_HIGHLIGHTS[0].youtubeId}`}
+                  src={`https://www.youtube-nocookie.com/embed/${YT_HIGHLIGHTS[0].youtubeId}?rel=0&modestbranding=1`}
                   loading="lazy"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
                 />
               </div>
@@ -526,13 +576,6 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="stats-side">
-              <h4>Shot chart snapshot</h4>
-              <p>
-                Volume alto dal pick&roll centrale, floater affidabile nel traffico e piedi a posto
-                in angolo per la tripla piedi per terra.
-              </p>
-            </div>
           </div>
         </section>
 
@@ -635,25 +678,106 @@ function App() {
             <span className="section-label">04</span>
             <div>
               <h2 className="section-title">Storia</h2>
-              <p className="section-desc">Dal campetto alle luci del palazzo.</p>
+              <p className="section-desc">
+                Dalle origini in Calabria al basket nazionale: il percorso, le tappe e gli obiettivi.
+              </p>
             </div>
           </div>
           <div className="story-grid">
             <p>
-              Cresciuto tra playground e palestre di periferia, Ilario impara presto che il talento è
-              solo il punto di partenza. Dopo gli anni nelle giovanili, debutta tra i professionisti
-              a 18 anni, diventando in poco tempo uno dei playmaker più imprevedibili del campionato.
+              Sono Ilario Simonetti, nato il 27 aprile 2004 a Stilo, in provincia di Reggio Calabria.
+              Gioco a pallacanestro nel ruolo di ala: sono alto 200 cm e peso 103 kg. Mi considero un
+              giocatore moderno, capace di unire fisicità, mobilità e versatilità tecnica.
             </p>
             <p>
-              Oggi è il motore offensivo della sua squadra: ritmo alto, letture istantanee e quella
-              capacità di prendersi il possesso decisivo quando il pallone pesa di più.
+              La mia passione per il basket nasce così da una straordinaria coincidenza quando avevo
+              13 anni: ho iniziato a muovere i primi passi nel settore giovanile dell&apos;Eutimo
+              Locri. È lì che ho capito quanto questo sport sarebbe diventato parte della mia vita.
             </p>
+            <p>
+              Per crescere ho scelto di lasciare casa e continuare il mio percorso alla Vis Ferrara.
+              È stata un&apos;esperienza fondamentale, che mi ha permesso di completare la mia
+              formazione giovanile e confrontarmi con un livello sempre più alto. In quegli anni è
+              arrivata anche la convocazione nella Nazionale Under 16, un traguardo importante che mi
+              ha dato grande motivazione e consapevolezza.
+            </p>
+            <p>
+              Il mio ingresso nel basket senior è avvenuto nella stagione 2021/22 con la
+              Pallacanestro Molinella in Serie C Gold, dove ho iniziato a confrontarmi con il basket
+              dei grandi. L&apos;anno successivo ho fatto un ulteriore passo avanti, approdando alla
+              Virtus Bava Pozzuoli in Serie B Nazionale, continuando a crescere sia a livello tecnico
+              che mentale.
+            </p>
+            <p>
+              Nel 2023 ho avuto l&apos;opportunità di tornare nella mia terra, indossando la maglia
+              della Pallacanestro Viola Reggio Calabria. È stata una delle esperienze più significative
+              del mio percorso: diventare capitano, assumermi responsabilità importanti e contribuire
+              a portare la squadra ai playoff di Serie B Interregionale mi ha fatto crescere molto,
+              dentro e fuori dal campo. In quella stagione ho chiuso con 313 punti in 35 partite,
+              una tappa importante della mia crescita.
+            </p>
+            <p>
+              Nel 2025 è arrivata una nuova sfida con la Benacquista Assicurazioni Latina Basket,
+              entrando in un contesto ancora più competitivo. È stato un passaggio fondamentale per
+              continuare il mio percorso e mettermi alla prova a un livello più alto.
+            </p>
+            <p>
+              In campo cerco di essere un&apos;ala completa: mi piace giocare con intensità, essere
+              presente sotto canestro, ma anche adattarmi sul perimetro e migliorare continuamente le
+              mie letture offensive. Credo molto nel lavoro quotidiano, nella disciplina e nello
+              spirito di squadra.
+            </p>
+            <p>
+              Mi definisco una persona determinata, ambiziosa e sempre alla ricerca del
+              miglioramento. Ogni esperienza mi ha insegnato qualcosa e mi ha aiutato a crescere.
+            </p>
+            <p>
+              Il mio obiettivo è continuare a migliorare, consolidarmi nei campionati nazionali e
+              raggiungere il livello più alto possibile, senza mai perdere la passione che mi ha
+              portato fin qui. 🏀
+            </p>
+          </div>
+        </section>
+
+        <section id="club" className="section club-section" aria-labelledby="club-heading">
+          <header className="club-brand-header">
+            <span className="section-label">05</span>
+            <div className="club-brand-intro">
+              <p className="club-brand-kicker">Carriera</p>
+              <h2 className="club-brand-title" id="club-heading">
+                Club
+              </h2>
+              <p className="club-brand-lede">
+                Le squadre con cui ha vestito la maglia: un percorso che parte dalla Calabria e si è
+                costruito nel basket nazionale.
+              </p>
+            </div>
+          </header>
+
+          <div className="club-brand-strip">
+            <ul className="club-logos-grid" aria-label="Loghi squadre">
+              {CLUB_TEAMS.map((club) => (
+                <li key={club.id} className="club-logo-cell">
+                  <div className="club-logo-frame">
+                    <img
+                      className="club-logo-img"
+                      src={club.logo}
+                      alt={`Logo ${club.name}`}
+                      loading="lazy"
+                      width={160}
+                      height={160}
+                      draggable={false}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
         <section id="interviews" className="section interviews-section">
           <div className="section-header">
-            <span className="section-label">05</span>
+            <span className="section-label">06</span>
             <div>
               <h2 className="section-title">Interviste</h2>
               <p className="section-desc">Le parole dietro le prestazioni.</p>
@@ -686,12 +810,148 @@ function App() {
               </div>
               <p>Guarda il video completo su YouTube.</p>
             </article>
+            <article className="interview-card">
+              <h4>Intervista su YouTube</h4>
+              <div className="interview-embed" aria-hidden="false">
+                <iframe
+                  title="Intervista su YouTube — video aggiuntivo"
+                  src="https://www.youtube.com/embed/eXH2unTwrL4"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+              <p>Guarda il video completo su YouTube.</p>
+            </article>
+            <article className="interview-card">
+              <h4>Intervista su YouTube</h4>
+              <div className="interview-embed" aria-hidden="false">
+                <iframe
+                  title="Intervista su YouTube — quarto video"
+                  src="https://www.youtube.com/embed/Awb7k3ZnIdg"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+              <p>Guarda il video completo su YouTube.</p>
+            </article>
           </div>
+        </section>
+
+        <section id="social" className="section social-section" aria-labelledby="social-heading">
+          <div className="section-header">
+            <span className="section-label">07</span>
+            <div>
+              <h2 className="section-title" id="social-heading">
+                Social
+              </h2>
+              <p className="section-desc">
+                Instagram, TikTok e Facebook: contenuti, dietro le quinte e aggiornamenti.
+              </p>
+            </div>
+          </div>
+          <ul className="social-section-list">
+            <li>
+              <a
+                className="social-section-card social-section-card--instagram"
+                href={instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="social-section-card-accent" aria-hidden="true" />
+                <span className="social-section-icon-wrap" aria-hidden="true">
+                  <img
+                    className="social-section-icon-img"
+                    src="/icons8-instagram-50.png"
+                    alt=""
+                  />
+                </span>
+                <span className="social-section-label">Instagram</span>
+                <span className="social-section-handle">@ilariosimonetti</span>
+                <p className="social-section-meta">
+                  Foto, reel e aggiornamenti direttamente dagli spogliatoi e dal parquet.
+                </p>
+                <div className="social-section-faux-strip" aria-hidden="true">
+                  <span className="social-section-faux-cell" />
+                  <span className="social-section-faux-cell" />
+                  <span className="social-section-faux-cell" />
+                </div>
+                <span className="social-section-cta">
+                  Apri il profilo
+                  <span className="social-section-cta-arrow">→</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                className="social-section-card social-section-card--tiktok"
+                href={tiktokUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="social-section-card-accent" aria-hidden="true" />
+                <span className="social-section-icon-wrap" aria-hidden="true">
+                  <svg className="social-section-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      fill="currentColor"
+                      d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"
+                    />
+                  </svg>
+                </span>
+                <span className="social-section-label">TikTok</span>
+                <span className="social-section-handle">@sssimo.7</span>
+                <p className="social-section-meta">
+                  Clip verticali, trend e dietro le quinte in formato veloce e diretto.
+                </p>
+                <div className="social-section-faux-strip" aria-hidden="true">
+                  <span className="social-section-faux-cell" />
+                  <span className="social-section-faux-cell" />
+                  <span className="social-section-faux-cell" />
+                </div>
+                <span className="social-section-cta">
+                  Apri il profilo
+                  <span className="social-section-cta-arrow">→</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                className="social-section-card social-section-card--facebook"
+                href={facebookUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="social-section-card-accent" aria-hidden="true" />
+                <span className="social-section-icon-wrap" aria-hidden="true">
+                  <img
+                    className="social-section-icon-img"
+                    src="/icons8-facebook-nuovo-50-2.png"
+                    alt=""
+                  />
+                </span>
+                <span className="social-section-label">Facebook</span>
+                <span className="social-section-handle">Pagina ufficiale</span>
+                <p className="social-section-meta">
+                  Post, comunicazioni e spazio per la community che segue Ilario.
+                </p>
+                <div className="social-section-faux-strip" aria-hidden="true">
+                  <span className="social-section-faux-cell" />
+                  <span className="social-section-faux-cell" />
+                  <span className="social-section-faux-cell" />
+                </div>
+                <span className="social-section-cta">
+                  Apri la pagina
+                  <span className="social-section-cta-arrow">→</span>
+                </span>
+              </a>
+            </li>
+          </ul>
         </section>
 
         <section id="store" className="section store-section">
           <div className="section-header">
-            <span className="section-label">06</span>
+            <span className="section-label">08</span>
             <div>
               <h2 className="section-title">Shop</h2>
               <p className="section-desc">Maglia ufficiale da gioco. Stesso numero, solo tua.</p>
@@ -720,8 +980,89 @@ function App() {
       </main>
 
       <footer className="site-footer">
+        <div className="footer-basket-particles" aria-hidden="true">
+          <span className="footer-basket-particle" style={{ '--x': '8%', '--y': '24%', '--dx': '95px', '--dy': '-16px', '--dx1': '34px', '--dy1': '20px', '--dx2': '62px', '--dy2': '-4px', '--t': '12s', '--s': '18px', '--o': 0.5 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '26%', '--y': '62%', '--dx': '-80px', '--dy': '-20px', '--dx1': '-28px', '--dy1': '18px', '--dx2': '-54px', '--dy2': '-6px', '--t': '15s', '--s': '14px', '--o': 0.45 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '44%', '--y': '30%', '--dx': '72px', '--dy': '-14px', '--dx1': '24px', '--dy1': '14px', '--dx2': '48px', '--dy2': '-5px', '--t': '14s', '--s': '16px', '--o': 0.52 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '63%', '--y': '66%', '--dx': '-62px', '--dy': '-18px', '--dx1': '-20px', '--dy1': '16px', '--dx2': '-42px', '--dy2': '-8px', '--t': '16s', '--s': '20px', '--o': 0.48 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '82%', '--y': '26%', '--dx': '86px', '--dy': '-22px', '--dx1': '30px', '--dy1': '18px', '--dx2': '58px', '--dy2': '-7px', '--t': '18s', '--s': '15px', '--o': 0.42 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '14%', '--y': '46%', '--dx': '70px', '--dy': '-24px', '--dx1': '25px', '--dy1': '15px', '--dx2': '50px', '--dy2': '-8px', '--t': '11s', '--s': '13px', '--o': 0.44 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '33%', '--y': '18%', '--dx': '-75px', '--dy': '-10px', '--dx1': '-22px', '--dy1': '12px', '--dx2': '-48px', '--dy2': '-2px', '--t': '13.5s', '--s': '17px', '--o': 0.47 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '52%', '--y': '54%', '--dx': '64px', '--dy': '-18px', '--dx1': '20px', '--dy1': '14px', '--dx2': '42px', '--dy2': '-5px', '--t': '10.5s', '--s': '12px', '--o': 0.4 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '72%', '--y': '42%', '--dx': '-68px', '--dy': '-20px', '--dx1': '-18px', '--dy1': '13px', '--dx2': '-40px', '--dy2': '-7px', '--t': '14.5s', '--s': '19px', '--o': 0.5 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '90%', '--y': '58%', '--dx': '52px', '--dy': '-14px', '--dx1': '16px', '--dy1': '10px', '--dx2': '34px', '--dy2': '-4px', '--t': '12.8s', '--s': '14px', '--o': 0.41 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '5%', '--y': '70%', '--dx': '88px', '--dy': '-22px', '--dx1': '32px', '--dy1': '17px', '--dx2': '60px', '--dy2': '-6px', '--t': '17.5s', '--s': '16px', '--o': 0.46 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '22%', '--y': '34%', '--dx': '-60px', '--dy': '-12px', '--dx1': '-20px', '--dy1': '11px', '--dx2': '-38px', '--dy2': '-3px', '--t': '9.8s', '--s': '11px', '--o': 0.38 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '41%', '--y': '72%', '--dx': '58px', '--dy': '-16px', '--dx1': '18px', '--dy1': '12px', '--dx2': '36px', '--dy2': '-5px', '--t': '15.2s', '--s': '15px', '--o': 0.43 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '58%', '--y': '16%', '--dx': '-82px', '--dy': '-18px', '--dx1': '-26px', '--dy1': '14px', '--dx2': '-56px', '--dy2': '-7px', '--t': '16.8s', '--s': '18px', '--o': 0.49 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '77%', '--y': '74%', '--dx': '66px', '--dy': '-21px', '--dx1': '21px', '--dy1': '15px', '--dx2': '44px', '--dy2': '-8px', '--t': '13.2s', '--s': '13px', '--o': 0.42 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+          <span className="footer-basket-particle" style={{ '--x': '95%', '--y': '40%', '--dx': '-48px', '--dy': '-11px', '--dx1': '-14px', '--dy1': '9px', '--dx2': '-30px', '--dy2': '-3px', '--t': '11.7s', '--s': '12px', '--o': 0.36 }}>
+            <span className="footer-basket-particle-icon" />
+          </span>
+        </div>
         <span className="footer-brand">Ilario Simonetti #7</span>
-        <span>© 2026 · Sito ufficiale</span>
+        <div className="footer-right">
+          <div className="social-links" aria-label="Social links">
+            <a
+              className="social-link"
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              title="Instagram"
+            >
+              <img className="social-icon-img" src="/icons8-instagram-50.png" alt="" aria-hidden="true" />
+            </a>
+            {facebookUrl ? (
+              <a
+                className="social-link"
+                href={facebookUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+                title="Facebook"
+              >
+                <img
+                  className="social-icon-img"
+                  src="/icons8-facebook-nuovo-50-2.png"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </a>
+            ) : null}
+          </div>
+          <span className="footer-copyright">© 2026 · Sito ufficiale</span>
+        </div>
       </footer>
       </div>
     </>
