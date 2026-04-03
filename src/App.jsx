@@ -169,24 +169,23 @@ const CLUB_TEAMS = [
 ]
 
 function App() {
-  const [showIntro, setShowIntro] = useState(true)
-  const [introFinished, setIntroFinished] = useState(false)
+  const [introMounted, setIntroMounted] = useState(true)
+  const [introExiting, setIntroExiting] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const instagramUrl = 'https://www.instagram.com/ilariosimonetti?igsh=MXM5dHNseDA5dnA0eA=='
   const tiktokUrl = 'https://www.tiktok.com/@sssimo.7?_r=1&_t=ZN-95EBVB7Kg34'
   const facebookUrl = 'https://www.facebook.com/share/1CsMyVVD4G/?mibextid=wwXIfr'
 
   useEffect(() => {
-    if (!showIntro) {
-      const timer = setTimeout(() => setIntroFinished(true), 400)
-      return () => clearTimeout(timer)
-    }
-  }, [showIntro])
+    if (!introExiting) return
+    const ms = 780
+    const t = window.setTimeout(() => setIntroMounted(false), ms)
+    return () => window.clearTimeout(t)
+  }, [introExiting])
 
   useEffect(() => {
-    // Close menu if intro is shown again
-    if (showIntro) setMobileMenuOpen(false)
-  }, [showIntro])
+    if (introMounted) setMobileMenuOpen(false)
+  }, [introMounted])
 
   useEffect(() => {
     if (!mobileMenuOpen) return
@@ -207,10 +206,14 @@ function App() {
 
   const handleMobileNavLink = () => setMobileMenuOpen(false)
 
+  const finishIntro = () => {
+    setIntroExiting(true)
+  }
+
   return (
     <>
-      {showIntro && (
-        <div className={`intro-overlay intro-cinema ${introFinished ? 'intro-hidden' : ''}`}>
+      {introMounted && (
+        <div className={`intro-overlay intro-cinema ${introExiting ? 'intro-hidden' : ''}`}>
           <div className="intro-cinema-bars" />
           <div className="intro-cinema-screen">
             <div className="intro-vignette" />
@@ -220,19 +223,21 @@ function App() {
               autoPlay
               muted
               playsInline
-              onEnded={() => setShowIntro(false)}
+              onEnded={finishIntro}
             />
           </div>
           <p className="intro-name">Ilario Simonetti #7</p>
           <div className="intro-overlay-content">
-            <button className="intro-skip" onClick={() => setShowIntro(false)}>
+            <button type="button" className="intro-skip" onClick={finishIntro}>
               Salta intro
             </button>
           </div>
         </div>
       )}
 
-      <div className={`site ${showIntro ? 'site-hidden' : 'site-visible'}`}>
+      <div
+        className={`site ${introMounted && !introExiting ? 'site-hidden' : 'site-visible'}`}
+      >
       <header className="site-header">
         <a href="#" className="brand">
           <span className="brand-avatar-card" aria-hidden="true">

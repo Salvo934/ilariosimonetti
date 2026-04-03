@@ -1,10 +1,22 @@
 /* ========== INTRO CINEMA ========== */
+html,
+body {
+  background: #050508;
+}
+
 .intro-overlay.intro-cinema {
   position: fixed;
   inset: 0;
   background: #000;
   z-index: 40;
   overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.7s cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+.intro-overlay.intro-cinema.intro-hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .intro-cinema-bars {
@@ -38,13 +50,28 @@
   overflow: hidden;
 }
 
+/* Copre eventuali artefatti (es. striscia grigia) sul bordo superiore della registrazione */
+.intro-cinema-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: min(18px, 2.5vh);
+  background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.92) 55%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 .intro-cinema-screen .intro-video {
   position: absolute;
-  inset: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  /* Ritaglia ~12px dall’alto: la striscia grigia resta fuori dall’area visibile */
+  top: -12px;
+  height: calc(100% + 12px);
   object-fit: cover;
-  object-position: center 45%;
+  object-position: center 46%;
   display: block;
 }
 
@@ -109,17 +136,12 @@
 .site-hidden {
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
 .site-visible {
   opacity: 1;
-  transition: opacity 0.4s ease-out;
-}
-
-.intro-hidden {
-  opacity: 0;
-  transition: opacity 0.4s ease-out;
-  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
 /* ========== LAYOUT SITO ========== */
