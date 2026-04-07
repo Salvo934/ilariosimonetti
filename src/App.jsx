@@ -168,8 +168,14 @@ const CLUB_TEAMS = [
   },
 ]
 
+/** Stesso breakpoint del layout mobile in App.css: niente video intro sotto questa larghezza. */
+const INTRO_SKIP_MOBILE_MAX_PX = 900
+
 function App() {
-  const [introMounted, setIntroMounted] = useState(true)
+  const [introMounted, setIntroMounted] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !window.matchMedia(`(max-width: ${INTRO_SKIP_MOBILE_MAX_PX}px)`).matches
+  })
   const [introExiting, setIntroExiting] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const introVideoRef = useRef(null)
