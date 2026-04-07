@@ -218,16 +218,19 @@ function App() {
     }
   }, [introMounted])
 
-  /** Hero dopo l’intro: niente competizione con il decoder dell’intro all’avvio + play() esplicito. */
+  /**
+   * Hero dopo l’intro: play() esplicito (autoplay HTML spesso ignorato su iOS).
+   * Su mobile: ref a volte non pronto al primo tick + Safari vuole playsinline in DOM + retry su canplay / quando entra in viewport.
+   */
   useEffect(() => {
     if (introMounted) return
 
-    const mq = window.matchMedia('(max-width: 900px)')
-    const pick = () => (mq.matches ? heroVideoMobileRef.current : heroVideoDesktopRef.current)
+    const mq = window.matchMedia(`(max-width: ${INTRO_SKIP_MOBILE_MAX_PX}px)`)
+    let cancelled = false
 
-    const kick = () => {
-      const el = pick()
-      if (!el) return
+    const kickDesktop = () => {
+      const el = heroVideoDesktopRef.current
+      if (!el || cancelled) return
       el.muted = true
       el.defaultMuted = true
       el.playsInline = true
@@ -235,20 +238,98 @@ function App() {
       if (p && typeof p.catch === 'function') p.catch(() => {})
     }
 
-    kick()
-    const t1 = window.setTimeout(kick, 80)
-    const t2 = window.setTimeout(kick, 400)
-    const onVis = () => {
-      if (document.visibilityState === 'visible') kick()
+    const setupMobile = (el) => {
+      const arm = () => {
+        if (cancelled) return
+        el.muted = true
+        el.defaultMuted = true
+        el.setAttribute('muted', '')
+        el.playsInline = true
+        el.setAttribute('playsinline', '')
+        el.setAttribute('webkit-playsinline', '')
+        const p = el.play()
+        if (p && typeof p.catch === 'function') p.catch(() => {})
+      }
+
+      arm()
+      requestAnimationFrame(() => requestAnimationFrame(arm))
+      const timeouts = [40, 120, 350, 700, 1200].map((ms) => window.setTimeout(arm, ms))
+
+      const onMedia = () => arm()
+      ;['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough'].forEach((ev) => {
+        el.addEventListener(ev, onMedia)
+      })
+
+      let io
+      if (typeof IntersectionObserver !== 'undefined') {
+        io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) arm()
+          },
+          { threshold: 0.01, rootMargin: '40px 0px' }
+        )
+        io.observe(el)
+      }
+
+      const onVis = () => {
+        if (document.visibilityState === 'visible') arm()
+      }
+      const onResize = () => window.requestAnimationFrame(arm)
+      document.addEventListener('visibilitychange', onVis)
+      window.addEventListener('resize', onResize)
+
+      return () => {
+        timeouts.forEach((id) => window.clearTimeout(id))
+        ;['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough'].forEach((ev) => {
+          el.removeEventListener(ev, onMedia)
+        })
+        io?.disconnect()
+        document.removeEventListener('visibilitychange', onVis)
+        window.removeEventListener('resize', onResize)
+      }
     }
-    const onResize = () => window.requestAnimationFrame(kick)
-    document.addEventListener('visibilitychange', onVis)
-    window.addEventListener('resize', onResize)
+
+    if (!mq.matches) {
+      kickDesktop()
+      const t1 = window.setTimeout(kickDesktop, 80)
+      const t2 = window.setTimeout(kickDesktop, 400)
+      const onVis = () => {
+        if (document.visibilityState === 'visible') kickDesktop()
+      }
+      const onResize = () => window.requestAnimationFrame(kickDesktop)
+      document.addEventListener('visibilitychange', onVis)
+      window.addEventListener('resize', onResize)
+      return () => {
+        cancelled = true
+        window.clearTimeout(t1)
+        window.clearTimeout(t2)
+        document.removeEventListener('visibilitychange', onVis)
+        window.removeEventListener('resize', onResize)
+      }
+    }
+
+    let raf = 0
+    let attempts = 0
+    let disposeMobile = () => {}
+
+    const waitRef = () => {
+      if (cancelled) return
+      const el = heroVideoMobileRef.current
+      if (el) {
+        disposeMobile = setupMobile(el)
+        return
+      }
+      attempts += 1
+      if (attempts < 120) {
+        raf = window.requestAnimationFrame(waitRef)
+      }
+    }
+    waitRef()
+
     return () => {
-      window.clearTimeout(t1)
-      window.clearTimeout(t2)
-      document.removeEventListener('visibilitychange', onVis)
-      window.removeEventListener('resize', onResize)
+      cancelled = true
+      window.cancelAnimationFrame(raf)
+      disposeMobile()
     }
   }, [introMounted])
 
