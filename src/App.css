@@ -104,6 +104,100 @@ body {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
 }
 
+/* ========== INTRO CINEMA (desktop, video) ========== */
+.intro-overlay.intro-cinema {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 40;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.7s cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+.intro-overlay.intro-cinema.intro-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-cinema-bars {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), transparent);
+  z-index: 2;
+  pointer-events: none;
+  display: none;
+}
+
+.intro-cinema-bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -60px;
+  height: 60px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+}
+
+.intro-cinema-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.intro-cinema-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: min(18px, 2.5vh);
+  background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.92) 55%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.intro-cinema-screen .intro-video {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: -12px;
+  height: calc(100% + 12px);
+  object-fit: cover;
+  object-position: center 46%;
+  display: block;
+}
+
+.intro-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 90px 45px rgba(0, 0, 0, 0.25);
+}
+
+.intro-name {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 6px;
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
+  z-index: 3;
+}
+
+.intro-overlay.intro-cinema .intro-overlay-content {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
+}
+
 .intro-skip {
   font-family: var(--font-body);
   border: 2px solid rgba(255, 255, 255, 0.6);

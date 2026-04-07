@@ -176,7 +176,12 @@ const INTRO_LOADING_MS = 2400
 function App() {
   const [introMounted, setIntroMounted] = useState(true)
   const [introExiting, setIntroExiting] = useState(false)
+  const [introIsMobileViewport, setIntroIsMobileViewport] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia(`(max-width: ${INTRO_SKIP_MOBILE_MAX_PX}px)`).matches
+  })
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const introVideoRef = useRef(null)
   const heroVideoDesktopRef = useRef(null)
   const heroVideoMobileRef = useRef(null)
   const instagramUrl = 'https://www.instagram.com/ilariosimonetti?igsh=MXM5dHNseDA5dnA0eA=='
@@ -195,10 +200,40 @@ function App() {
   }, [introMounted])
 
   useEffect(() => {
-    if (!introMounted || introExiting) return
+    const mq = window.matchMedia(`(max-width: ${INTRO_SKIP_MOBILE_MAX_PX}px)`)
+    const onChange = () => setIntroIsMobileViewport(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  /** Solo intro “loading” mobile: chiusura automatica. Desktop: video fino a fine / Salta. */
+  useEffect(() => {
+    if (!introMounted || introExiting || !introIsMobileViewport) return
     const t = window.setTimeout(() => setIntroExiting(true), INTRO_LOADING_MS)
     return () => window.clearTimeout(t)
-  }, [introMounted, introExiting])
+  }, [introMounted, introExiting, introIsMobileViewport])
+
+  /** Autoplay intro video (solo desktop). */
+  useEffect(() => {
+    if (!introMounted || introIsMobileViewport) return
+    const el = introVideoRef.current
+    if (!el) return
+
+    const kick = () => {
+      el.muted = true
+      el.defaultMuted = true
+      el.playsInline = true
+      const p = el.play()
+      if (p && typeof p.catch === 'function') p.catch(() => {})
+    }
+
+    kick()
+    const t = window.setTimeout(kick, 120)
+    el.addEventListener('canplay', kick, { once: true })
+    return () => {
+      window.clearTimeout(t)
+    }
+  }, [introMounted, introIsMobileViewport])
 
   /**
    * Hero dopo l’intro: play() esplicito (autoplay HTML spesso ignorato su iOS).
@@ -340,28 +375,52 @@ function App() {
 
   return (
     <>
-      {introMounted && (
-        <div className={`intro-overlay intro-loading ${introExiting ? 'intro-hidden' : ''}`}>
-          <p className="intro-loading-brand">ilario simonetti</p>
-          <div className="intro-loading-center" aria-hidden="true">
-            <div className="intro-loading-spinner">
-              <img
-                className="intro-loading-icon"
-                src="/icons8-pallacanestro-64.png"
-                alt=""
-                width={64}
-                height={64}
-                draggable={false}
-              />
+      {introMounted &&
+        (introIsMobileViewport ? (
+          <div className={`intro-overlay intro-loading ${introExiting ? 'intro-hidden' : ''}`}>
+            <p className="intro-loading-brand">ilario simonetti</p>
+            <div className="intro-loading-center" aria-hidden="true">
+              <div className="intro-loading-spinner">
+                <img
+                  className="intro-loading-icon"
+                  src="/icons8-pallacanestro-64.png"
+                  alt=""
+                  width={64}
+                  height={64}
+                  draggable={false}
+                />
+              </div>
+            </div>
+            <div className="intro-overlay-content intro-loading-footer">
+              <button type="button" className="intro-skip" onClick={finishIntro}>
+                Salta
+              </button>
             </div>
           </div>
-          <div className="intro-overlay-content intro-loading-footer">
-            <button type="button" className="intro-skip" onClick={finishIntro}>
-              Salta
-            </button>
+        ) : (
+          <div className={`intro-overlay intro-cinema ${introExiting ? 'intro-hidden' : ''}`}>
+            <div className="intro-cinema-bars" />
+            <div className="intro-cinema-screen">
+              <div className="intro-vignette" />
+              <video
+                ref={introVideoRef}
+                className="intro-video"
+                src={introVideo}
+                autoPlay
+                muted
+                playsInline
+                preload="auto"
+                onEnded={finishIntro}
+              />
+            </div>
+            <p className="intro-name">Ilario Simonetti #7</p>
+            <div className="intro-overlay-content">
+              <button type="button" className="intro-skip" onClick={finishIntro}>
+                Salta intro
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
 
       <div
         className={`site ${introMounted && !introExiting ? 'site-hidden' : 'site-visible'}`}
