@@ -7,9 +7,7 @@ body {
 .intro-overlay.intro-loading {
   position: fixed;
   inset: 0;
-  background:
-    radial-gradient(ellipse 80% 55% at 50% 45%, rgba(225, 29, 137, 0.12), transparent 55%),
-    #050508;
+  background: #050508;
   z-index: 40;
   overflow: hidden;
   opacity: 1;
@@ -21,12 +19,42 @@ body {
   pointer-events: none;
 }
 
-.intro-loading-brand {
+.intro-loading-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 42%, rgba(225, 29, 137, 0.16), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(59, 130, 246, 0.08), transparent 45%),
+    radial-gradient(ellipse 50% 50% at 15% 75%, rgba(225, 29, 137, 0.06), transparent 50%);
+  animation: intro-ambient-shift 10s ease-in-out infinite alternate;
+}
+
+@keyframes intro-ambient-shift {
+  0% {
+    filter: hue-rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    filter: hue-rotate(12deg);
+    opacity: 0.92;
+  }
+}
+
+.intro-loading-brand-row {
   position: absolute;
   top: clamp(22px, 5vw, 36px);
   left: clamp(20px, 5vw, 40px);
-  margin: 0;
   z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35em 0.5em;
+  max-width: calc(100% - 40px);
+}
+
+.intro-loading-name {
   font-family: var(--font-display);
   font-size: clamp(18px, 4.2vw, 28px);
   font-weight: 400;
@@ -36,35 +64,117 @@ body {
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85);
 }
 
+.intro-loading-hash {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 5vw, 36px);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: #f472b6;
+  text-shadow:
+    0 0 28px rgba(225, 29, 137, 0.55),
+    0 2px 20px rgba(0, 0, 0, 0.9);
+}
+
 .intro-loading-center {
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 28px;
   pointer-events: none;
   z-index: 1;
+  padding: 100px 20px 120px;
+  box-sizing: border-box;
 }
 
-.intro-loading-spinner {
+.intro-loading-stage {
+  position: relative;
+  width: min(220px, 58vw);
+  height: min(220px, 58vw);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 28px;
+}
+
+.intro-loading-burst {
+  position: absolute;
+  inset: -8%;
   border-radius: 50%;
-  background: rgba(18, 12, 28, 0.55);
-  border: 1px solid rgba(244, 114, 182, 0.35);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(225, 29, 137, 0.45) 18%,
+    transparent 35%,
+    rgba(59, 130, 246, 0.2) 52%,
+    transparent 70%,
+    rgba(244, 114, 182, 0.35) 88%,
+    transparent 100%
+  );
+  animation: intro-burst-spin 4.5s linear infinite;
+  opacity: 0.5;
+  filter: blur(0.5px);
+}
+
+.intro-loading-orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: rgba(244, 114, 182, 0.6);
+  border-right-color: rgba(244, 114, 182, 0.12);
+}
+
+.intro-loading-orbit--slow {
+  inset: 4%;
+  animation: intro-orbit-spin 7s linear infinite;
+  opacity: 0.85;
+}
+
+.intro-loading-orbit--fast {
+  inset: 14%;
+  border-top-color: rgba(225, 29, 137, 0.75);
+  border-right-color: rgba(225, 29, 137, 0.15);
+  animation: intro-orbit-spin 2.2s linear infinite reverse;
+  opacity: 0.5;
+}
+
+@keyframes intro-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes intro-burst-spin {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.intro-loading-ball-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44%;
+  height: 44%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.12), rgba(18, 12, 28, 0.85));
+  border: 1px solid rgba(244, 114, 182, 0.45);
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.55),
-    0 0 40px rgba(225, 29, 137, 0.15);
+    0 0 0 1px rgba(225, 29, 137, 0.2),
+    0 20px 50px rgba(0, 0, 0, 0.65),
+    0 0 48px rgba(225, 29, 137, 0.25);
+  animation: intro-ball-glow 2s ease-in-out infinite;
 }
 
 .intro-loading-icon {
-  width: clamp(56px, 14vw, 80px);
+  width: 72%;
   height: auto;
   display: block;
   animation: intro-ball-bounce 1.05s ease-in-out infinite;
-  filter: drop-shadow(0 6px 20px rgba(225, 29, 137, 0.35));
+  filter: drop-shadow(0 8px 22px rgba(225, 29, 137, 0.45));
 }
 
 @keyframes intro-ball-bounce {
@@ -77,9 +187,92 @@ body {
   }
 }
 
+@keyframes intro-ball-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(225, 29, 137, 0.2),
+      0 20px 50px rgba(0, 0, 0, 0.65),
+      0 0 40px rgba(225, 29, 137, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(244, 114, 182, 0.35),
+      0 24px 56px rgba(0, 0, 0, 0.7),
+      0 0 56px rgba(225, 29, 137, 0.38);
+  }
+}
+
+.intro-loading-status {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.intro-loading-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 2px;
+}
+
+.intro-loading-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f472b6;
+  animation: intro-dot-wave 1.2s ease-in-out infinite;
+  opacity: 0.35;
+}
+
+.intro-loading-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.intro-loading-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes intro-dot-wave {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .intro-loading-ambient {
+    animation: none;
+  }
+
+  .intro-loading-burst,
+  .intro-loading-orbit--slow,
+  .intro-loading-orbit--fast {
+    animation: none;
+  }
+
   .intro-loading-icon {
     animation: none;
+  }
+
+  .intro-loading-ball-wrap {
+    animation: none;
+  }
+
+  .intro-loading-dots span {
+    animation: none;
+    opacity: 0.7;
   }
 }
 

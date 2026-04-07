@@ -378,22 +378,39 @@ function App() {
       {introMounted &&
         (introIsMobileViewport ? (
           <div className={`intro-overlay intro-loading ${introExiting ? 'intro-hidden' : ''}`}>
-            <p className="intro-loading-brand">ilario simonetti</p>
-            <div className="intro-loading-center" aria-hidden="true">
-              <div className="intro-loading-spinner">
-                <img
-                  className="intro-loading-icon"
-                  src="/icons8-pallacanestro-64.png"
-                  alt=""
-                  width={64}
-                  height={64}
-                  draggable={false}
-                />
+            <div className="intro-loading-ambient" aria-hidden="true" />
+            <div className="intro-loading-brand-row">
+              <span className="intro-loading-name">ilario simonetti</span>
+              <span className="intro-loading-hash">#7</span>
+            </div>
+            <div className="intro-loading-center">
+              <div className="intro-loading-stage" aria-hidden="true">
+                <span className="intro-loading-burst" />
+                <span className="intro-loading-orbit intro-loading-orbit--slow" />
+                <span className="intro-loading-orbit intro-loading-orbit--fast" />
+                <div className="intro-loading-ball-wrap">
+                  <img
+                    className="intro-loading-icon"
+                    src="/icons8-pallacanestro-64.png"
+                    alt=""
+                    width={64}
+                    height={64}
+                    draggable={false}
+                  />
+                </div>
               </div>
+              <p className="intro-loading-status">
+                Caricamento
+                <span className="intro-loading-dots" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </p>
             </div>
             <div className="intro-overlay-content intro-loading-footer">
               <button type="button" className="intro-skip" onClick={finishIntro}>
-                Salta
+                Salta intro
               </button>
             </div>
           </div>
