@@ -168,17 +168,15 @@ const CLUB_TEAMS = [
   },
 ]
 
-/** Stesso breakpoint del layout mobile in App.css: niente video intro sotto questa larghezza. */
+/** Breakpoint layout mobile (hero video / effetti). */
 const INTRO_SKIP_MOBILE_MAX_PX = 900
 
+const INTRO_LOADING_MS = 2400
+
 function App() {
-  const [introMounted, setIntroMounted] = useState(() => {
-    if (typeof window === 'undefined') return true
-    return !window.matchMedia(`(max-width: ${INTRO_SKIP_MOBILE_MAX_PX}px)`).matches
-  })
+  const [introMounted, setIntroMounted] = useState(true)
   const [introExiting, setIntroExiting] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const introVideoRef = useRef(null)
   const heroVideoDesktopRef = useRef(null)
   const heroVideoMobileRef = useRef(null)
   const instagramUrl = 'https://www.instagram.com/ilariosimonetti?igsh=MXM5dHNseDA5dnA0eA=='
@@ -196,27 +194,11 @@ function App() {
     if (introMounted) setMobileMenuOpen(false)
   }, [introMounted])
 
-  /** Autoplay affidabile su iOS/Android: muted + playsInline + play() (l’attributo autoplay da solo spesso non basta). */
   useEffect(() => {
-    if (!introMounted) return
-    const el = introVideoRef.current
-    if (!el) return
-
-    const kick = () => {
-      el.muted = true
-      el.defaultMuted = true
-      el.playsInline = true
-      const p = el.play()
-      if (p && typeof p.catch === 'function') p.catch(() => {})
-    }
-
-    kick()
-    const t = window.setTimeout(kick, 120)
-    el.addEventListener('canplay', kick, { once: true })
-    return () => {
-      window.clearTimeout(t)
-    }
-  }, [introMounted])
+    if (!introMounted || introExiting) return
+    const t = window.setTimeout(() => setIntroExiting(true), INTRO_LOADING_MS)
+    return () => window.clearTimeout(t)
+  }, [introMounted, introExiting])
 
   /**
    * Hero dopo l’intro: play() esplicito (autoplay HTML spesso ignorato su iOS).
@@ -359,25 +341,23 @@ function App() {
   return (
     <>
       {introMounted && (
-        <div className={`intro-overlay intro-cinema ${introExiting ? 'intro-hidden' : ''}`}>
-          <div className="intro-cinema-bars" />
-          <div className="intro-cinema-screen">
-            <div className="intro-vignette" />
-            <video
-              ref={introVideoRef}
-              className="intro-video"
-              src={introVideo}
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
-              onEnded={finishIntro}
-            />
+        <div className={`intro-overlay intro-loading ${introExiting ? 'intro-hidden' : ''}`}>
+          <p className="intro-loading-brand">ilario simonetti</p>
+          <div className="intro-loading-center" aria-hidden="true">
+            <div className="intro-loading-spinner">
+              <img
+                className="intro-loading-icon"
+                src="/icons8-pallacanestro-64.png"
+                alt=""
+                width={64}
+                height={64}
+                draggable={false}
+              />
+            </div>
           </div>
-          <p className="intro-name">Ilario Simonetti #7</p>
-          <div className="intro-overlay-content">
+          <div className="intro-overlay-content intro-loading-footer">
             <button type="button" className="intro-skip" onClick={finishIntro}>
-              Salta intro
+              Salta
             </button>
           </div>
         </div>
