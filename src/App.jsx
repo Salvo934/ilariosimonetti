@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import introVideo from './assets/202603181433.mp4'
 import './App.css'
 
@@ -172,6 +172,9 @@ function App() {
   const [introMounted, setIntroMounted] = useState(true)
   const [introExiting, setIntroExiting] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const introVideoRef = useRef(null)
+  const heroVideoDesktopRef = useRef(null)
+  const heroVideoMobileRef = useRef(null)
   const instagramUrl = 'https://www.instagram.com/ilariosimonetti?igsh=MXM5dHNseDA5dnA0eA=='
   const tiktokUrl = 'https://www.tiktok.com/@sssimo.7?_r=1&_t=ZN-95EBVB7Kg34'
   const facebookUrl = 'https://www.facebook.com/share/1CsMyVVD4G/?mibextid=wwXIfr'
@@ -185,6 +188,62 @@ function App() {
 
   useEffect(() => {
     if (introMounted) setMobileMenuOpen(false)
+  }, [introMounted])
+
+  /** Autoplay affidabile su iOS/Android: muted + playsInline + play() (l’attributo autoplay da solo spesso non basta). */
+  useEffect(() => {
+    if (!introMounted) return
+    const el = introVideoRef.current
+    if (!el) return
+
+    const kick = () => {
+      el.muted = true
+      el.defaultMuted = true
+      el.playsInline = true
+      const p = el.play()
+      if (p && typeof p.catch === 'function') p.catch(() => {})
+    }
+
+    kick()
+    const t = window.setTimeout(kick, 120)
+    el.addEventListener('canplay', kick, { once: true })
+    return () => {
+      window.clearTimeout(t)
+    }
+  }, [introMounted])
+
+  /** Hero dopo l’intro: niente competizione con il decoder dell’intro all’avvio + play() esplicito. */
+  useEffect(() => {
+    if (introMounted) return
+
+    const mq = window.matchMedia('(max-width: 900px)')
+    const pick = () => (mq.matches ? heroVideoMobileRef.current : heroVideoDesktopRef.current)
+
+    const kick = () => {
+      const el = pick()
+      if (!el) return
+      el.muted = true
+      el.defaultMuted = true
+      el.playsInline = true
+      const p = el.play()
+      if (p && typeof p.catch === 'function') p.catch(() => {})
+    }
+
+    kick()
+    const t1 = window.setTimeout(kick, 80)
+    const t2 = window.setTimeout(kick, 400)
+    const onVis = () => {
+      if (document.visibilityState === 'visible') kick()
+    }
+    const onResize = () => window.requestAnimationFrame(kick)
+    document.addEventListener('visibilitychange', onVis)
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+      document.removeEventListener('visibilitychange', onVis)
+      window.removeEventListener('resize', onResize)
+    }
   }, [introMounted])
 
   useEffect(() => {
@@ -218,11 +277,13 @@ function App() {
           <div className="intro-cinema-screen">
             <div className="intro-vignette" />
             <video
+              ref={introVideoRef}
               className="intro-video"
               src={introVideo}
               autoPlay
               muted
               playsInline
+              preload="auto"
               onEnded={finishIntro}
             />
           </div>
@@ -387,23 +448,25 @@ function App() {
             <div className="hero-media" aria-hidden="true">
               <div className="hero-video-wrap">
                 <video
+                  ref={heroVideoDesktopRef}
                   className="hero-video hero-video-desktop"
                   src={introVideo}
-                  autoPlay
+                  autoPlay={!introMounted}
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="auto"
                   poster="/avatar.JPG"
                 />
                 <video
+                  ref={heroVideoMobileRef}
                   className="hero-video hero-video-mobile"
                   src="/202603191406.mp4"
-                  autoPlay
+                  autoPlay={!introMounted}
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="auto"
                   poster="/avatar.JPG"
                 />
                 <div className="hero-video-overlay" />
